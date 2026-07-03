@@ -1,7 +1,8 @@
 import * as React from "react"
 import * as Icons from "lucide-react"
-import { services } from "@/data/data-services" // wait, let's look at the imports, we shouldn't change the imports of other things. Let's check lines 1-6.
-
+import { services } from "@/data/services" // wait, let's look at the imports, we shouldn't change the imports of other things. Let's check lines 1-6.
+import { SectionHeader } from "@/components/shared/section-header"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export function Services() {
   return (
@@ -25,7 +26,7 @@ export function Services() {
               >
                 <CardHeader className="flex flex-row items-center gap-4 p-0">
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg border bg-background text-primary">
-                    <IconComponent className="h-6 w-6" />
+                    <IconComponent size={24} strokeWidth={1.5} />
                   </div>
                   <CardTitle className="font-semibold tracking-tight text-xl">
                     {service.title}
