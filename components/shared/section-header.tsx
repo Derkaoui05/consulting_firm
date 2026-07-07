@@ -1,10 +1,14 @@
+"use client"
+
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { fadeUp, staggerContainer, viewportOnce } from "@/lib/animations"
 
 interface SectionHeaderProps {
-  label?: string      // small uppercase label above heading
-  heading: string     // main h2
-  subheading?: string // paragraph below heading
-  centered?: boolean  // default true
+  label?: string
+  heading: string
+  subheading?: string
+  centered?: boolean
 }
 
 export function SectionHeader({
@@ -14,30 +18,38 @@ export function SectionHeader({
   centered = true,
 }: SectionHeaderProps) {
   return (
-    <div
+    <motion.div
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
       className={cn(
         "flex flex-col max-w-3xl",
         centered ? "mx-auto items-center text-center" : "items-start text-left"
       )}
     >
       {label && (
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <motion.span
+          variants={fadeUp}
+          className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+        >
           {label}
-        </span>
+        </motion.span>
       )}
-      <h2
+      <motion.h2
+        variants={fadeUp}
         className={cn(
           "font-semibold tracking-tight text-3xl sm:text-4xl",
           label ? "mt-4" : "mt-0"
         )}
       >
         {heading}
-      </h2>
+      </motion.h2>
       {subheading && (
-        <p className="mt-4 text-lg text-muted-foreground">
+        <motion.p variants={fadeUp} className="mt-4 text-lg text-muted-foreground">
           {subheading}
-        </p>
+        </motion.p>
       )}
-    </div>
+    </motion.div>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
@@ -17,15 +18,20 @@ const navLinks = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const onScroll = () => setScrolled(window.scrollY > 8)
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -64, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
         scrolled
@@ -34,27 +40,44 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="text-lg font-semibold tracking-tight">
-          Firm<span className="text-muted-foreground">Name</span>
-        </Link>
+        <motion.div
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Link href="/" className="text-lg font-semibold tracking-tight">
+            Firm<span className="text-muted-foreground">Name</span>
+          </Link>
+        </motion.div>
 
         <nav className="hidden md:flex md:items-center md:gap-8">
-          {navLinks.map((link) => (
-            <Link
+          {navLinks.map((link, i) => (
+            <motion.div
               key={link.href}
-              href={link.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 + i * 0.07 }}
             >
-              {link.label}
-            </Link>
+              <Link
+                href={link.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            </motion.div>
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <motion.div
+          className="hidden md:block"
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.55 }}
+        >
           <Button asChild size="sm">
             <Link href="#contact">Book a Call</Link>
           </Button>
-        </div>
+        </motion.div>
 
         <Sheet>
           <SheetTrigger asChild className="md:hidden">
@@ -80,6 +103,6 @@ export function Navbar() {
           </SheetContent>
         </Sheet>
       </div>
-    </header>
+    </motion.header>
   )
 }
