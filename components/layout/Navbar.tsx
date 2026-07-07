@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, LazyMotion, domAnimation } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
@@ -28,81 +28,83 @@ export function Navbar() {
   }, [])
 
   return (
-    <motion.header
-      initial={{ y: -64, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300",
-        scrolled
-          ? "border-b bg-background/80 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <Link href="/" className="text-lg font-semibold tracking-tight">
-            Firm<span className="text-muted-foreground">Name</span>
-          </Link>
-        </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.header
+        initial={mounted ? { y: -64, opacity: 0 } : false}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className={cn(
+          "fixed top-0 z-50 w-full transition-all duration-300",
+          scrolled
+            ? "border-b bg-background/80 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
+        )}
+      >
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <m.div
+            initial={mounted ? { opacity: 0, x: -12 } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Link href="/" className="text-lg font-semibold tracking-tight">
+              Firm<span className="text-muted-foreground">Name</span>
+            </Link>
+          </m.div>
 
-        <nav className="hidden md:flex md:items-center md:gap-8">
-          {navLinks.map((link, i) => (
-            <motion.div
-              key={link.href}
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 + i * 0.07 }}
-            >
-              <Link
-                href={link.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          <nav className="hidden md:flex md:items-center md:gap-8">
+            {navLinks.map((link, i) => (
+              <m.div
+                key={link.href}
+                initial={mounted ? { opacity: 0, y: -8 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 + i * 0.07 }}
               >
-                {link.label}
-              </Link>
-            </motion.div>
-          ))}
-        </nav>
-
-        <motion.div
-          className="hidden md:block"
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.55 }}
-        >
-          <Button asChild size="sm">
-            <Link href="#contact">Book a Call</Link>
-          </Button>
-        </motion.div>
-
-        <Sheet>
-          <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-72">
-            <nav className="mt-8 flex flex-col gap-6">
-              {navLinks.map((link) => (
                 <Link
-                  key={link.href}
                   href={link.href}
-                  className="text-base text-muted-foreground hover:text-foreground"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   {link.label}
                 </Link>
-              ))}
-              <Button asChild className="mt-2">
-                <Link href="#contact">Book a Call</Link>
+              </m.div>
+            ))}
+          </nav>
+
+          <m.div
+            className="hidden md:block"
+            initial={mounted ? { opacity: 0, x: 12 } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
+          >
+            <Button asChild size="sm">
+              <Link href="#contact">Book a Call</Link>
+            </Button>
+          </m.div>
+
+          <Sheet>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
               </Button>
-            </nav>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </motion.header>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72">
+              <nav className="mt-8 flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-base text-muted-foreground hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <Button asChild className="mt-2">
+                  <Link href="#contact">Book a Call</Link>
+                </Button>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </m.header>
+    </LazyMotion>
   )
 }

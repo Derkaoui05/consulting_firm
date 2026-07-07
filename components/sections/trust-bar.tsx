@@ -1,28 +1,24 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { LogoCloud } from "@/components/shared/logo-cloud"
 import { fadeUp, viewportOnce } from "@/lib/animations"
+import { LogoCloud } from "@/components/shared/logo-cloud"
 
 export function TrustBar() {
   return (
-    <motion.section
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      className="border-y bg-muted/30 py-10"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section className="border-y border-border bg-muted/10 py-12">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <motion.p
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
           variants={fadeUp}
-          className="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground"
+          className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-8"
         >
           Trusted by teams at
         </motion.p>
-        <motion.div variants={fadeUp} className="mt-8">
-          <LogoCloud />
-        </motion.div>
+        <LogoCloud />
       </div>
-    </motion.section>
+    </section>
   )
 }

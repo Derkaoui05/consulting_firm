@@ -6,66 +6,66 @@ import { LucideIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import { services } from "@/data/services"
 import { SectionHeader } from "@/components/shared/section-header"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { staggerGrid, fadeUp, scaleIn, viewportOnce } from "@/lib/animations"
+import { fadeUp, viewportOnce } from "@/lib/animations"
 
 export function Services() {
   return (
-    <section id="services" className="bg-muted/30 py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section id="services" className="bg-background py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <SectionHeader
-          label="Services"
-          heading="Expertise built around your business outcomes"
-          subheading="We don't sell open-ended advice or boilerplate plans. We deliver specific, measurable solutions to your most pressing growth bottlenecks."
+          label="What We Do"
+          heading="Services built for outcomes"
+          subheading="No open-ended retainers. We solve specific problems and deliver measurable results."
+          centered={false}
         />
 
-        <motion.div
-          variants={staggerGrid}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="mt-16 grid gap-6 md:grid-cols-2"
-        >
-          {services.map((service) => {
+        {/* Services list — bold alternating rows */}
+        <div className="mt-20 divide-y divide-border">
+          {services.map((service, index) => {
             const IconComponent =
               (Icons[service.icon as keyof typeof Icons] as LucideIcon | undefined) ??
               Icons.HelpCircle
 
             return (
-              <motion.div key={service.title} variants={scaleIn}>
-                <Card className="h-full rounded-xl border bg-card p-6 transition-shadow hover:shadow-md">
-                  <CardHeader className="flex flex-row items-center gap-4 p-0">
-                    <motion.div
-                      className="flex h-12 w-12 items-center justify-center rounded-lg border bg-background text-primary"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <IconComponent size={24} strokeWidth={1.5} />
-                    </motion.div>
-                    <CardTitle className="font-semibold tracking-tight text-xl">
-                      {service.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="mt-4 p-0">
-                    <p className="text-muted-foreground">{service.description}</p>
-                    <ul className="mt-6 space-y-3">
-                      {service.outcomes.map((outcome, idx) => (
-                        <motion.li
-                          key={idx}
-                          variants={fadeUp}
-                          className="flex items-start gap-3 text-sm"
-                        >
-                          <Icons.Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                          <span className="text-muted-foreground">{outcome}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewportOnce}
+                transition={{ duration: 0.5, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                className="group grid grid-cols-1 gap-6 py-10 lg:grid-cols-[60px_1fr_1fr_auto] lg:items-start lg:gap-12"
+              >
+                {/* Big index number */}
+                <span className="text-5xl font-semibold text-border group-hover:text-primary transition-colors duration-300 tabular-nums leading-none select-none">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                {/* Title + icon */}
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-border text-primary group-hover:border-primary group-hover:bg-primary/10 transition-colors duration-300">
+                    <IconComponent size={18} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-tight pt-1.5">
+                    {service.title}
+                  </h3>
+                </div>
+
+                {/* Description */}
+                <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+
+                {/* Outcomes */}
+                <ul className="space-y-2 min-w-max">
+                  {service.outcomes.map((outcome, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Icons.ArrowRight className="h-3 w-3 shrink-0 text-primary" />
+                      {outcome}
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             )
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
