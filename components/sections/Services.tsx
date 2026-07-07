@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as Icons from "lucide-react"
+import { LucideIcon } from "lucide-react"
 import { services } from "@/data/services" // wait, let's look at the imports, we shouldn't change the imports of other things. Let's check lines 1-6.
 import { SectionHeader } from "@/components/shared/section-header"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -17,7 +18,8 @@ export function Services() {
         <div className="mt-16 grid gap-6 md:grid-cols-2">
           {services.map((service) => {
             // Dynamically resolve the Lucide icon component
-            const IconComponent = Icons[service.icon as keyof typeof Icons] || Icons.HelpCircle
+            const IconComponent = (Icons[service.icon as keyof typeof Icons] as LucideIcon | undefined) ??
+  Icons.HelpCircle
 
             return (
               <Card
